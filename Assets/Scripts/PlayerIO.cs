@@ -9,17 +9,19 @@ public class PlayerIO : MonoBehaviour {
 	public bool resetCamera = false;
 	public Vector3 campos;
 
-
+	Transform controller;
+	public bool useDebug;
 	// Use this for initialization
 	void Start () {
 		currentPlayerIO = this;
+		controller = GameObject.FindWithTag("Player").transform;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (GameObject.FindWithTag ("FPSController").transform.position.y < -20) {
-			Debug.Log("Test");
-			GameObject.FindWithTag("FPSController").transform.position = new Vector3(GameObject.FindWithTag("FPSController").transform.position.x, 60, GameObject.FindWithTag("FPSController").transform.position.z);
+		if (controller.position.y < -20 && useDebug) {
+			//Debug.Log("Test");
+			controller.position = new Vector3(controller.position.x, 60, controller.position.z);
 		}
 		if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(2)){
 			Ray ray = camera.ViewportPointToRay(new Vector3(0.5f,0.5f,0.5f));
@@ -39,17 +41,16 @@ public class PlayerIO : MonoBehaviour {
 				} 
 
 
-		if (Input.GetMouseButtonDown (1)) {
+				if (Input.GetMouseButtonDown (1)) {
 					Vector3 p = hit.point;
-				if (selectedInventory != 0){
+					if (selectedInventory != 0){
 						p += hit.normal / 4;
-
 						chunk.SetBrick(selectedInventory,p);
-				}
+					}
 				
-			} 
+				} 
 
-			if (Input.GetMouseButtonDown(2)) {
+				if (Input.GetMouseButtonDown(2)) {
 					Vector3 p = hit.point;
 					p -= hit.normal / 4;
 					selectedInventory = chunk.GetByte(p);
